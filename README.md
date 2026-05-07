@@ -34,7 +34,21 @@
 
 ## Anonymous Dataset Download
 
-We have provided a complete anonymous link for our data on ...  TODO
+Please run the following commands to download the dataset:
+
+```python
+# prepare
+pip install -r requirements/requirement_general.txt
+
+# download from anonymous huggingface
+git clone https://huggingface.co/datasets/Obedience-Violin/Violin
+
+# change parquet data to real images
+python parquet_to_violin_data.py
+
+# rename
+mv Violin benchmark
+```
 
 ## 🚀 Generate and Evaluate with Open-Source Models
 ### Installation
