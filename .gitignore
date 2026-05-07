@@ -1,5 +1,4 @@
-benchmark/data
-benchmark/metadata
-benchmark/templates
+benchmark_/*
+benchmark/*
 closed_source_results/*
 __pycache__
