@@ -43,7 +43,7 @@ pip install -r requirements/requirement_general.txt
 # download from anonymous huggingface
 git clone https://huggingface.co/datasets/Obedience-Violin/Violin
 
-# change parquet data to real images
+# change parquet data to real images, this takes a few minutes.
 python parquet_to_violin_data.py
 
 # rename
