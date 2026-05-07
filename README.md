@@ -2,15 +2,17 @@
 #### Anonymous implementation of the paper: "Exploring the AI Obedience: Why is Generating a Pure Color Image Harder than CyberPunk?"
 
 ## 🎨 Introduction
-TODO
+![Introduction Diagram](assets/introduction.png)
 
-The repository is structured into three specialized modules:
+  Recent advances in generative AI have shown human-level performance in complex content creation. 
+  However, we identify a "Paradox of Simplicity": models that can render complex scenes often fail at trivial, low-entropy tasks, such as generating a uniform pure color image. 
+  We argue this is a systemic failure linked to uncontrollable emergent abilities. 
+  As models scale, strong priors for aesthetics and complexity override deterministic simplicity, creating an "aesthetic bias" that hinders the model's transition from data simulation to true intellectual abstraction.
+  To better investigate this problem, we formalize the concept of AI Obedience, a hierarchical framework that grades a model's ability to transition from probabilistic approximation to pixel-level determinism (Levels 1 to 5).
+  We introduce Violin, the first systematic benchmark designed to evaluate Level 4 Obedience through three deterministic tasks: color purity, image masking, and geometric shape generation. 
+  Using Violin, we evaluate several state-of-the-art models and reveal that closed-source models generally outperform open-source ones in deterministic precision. Interestingly, performance on our benchmark correlates with the benchmark in natural image generation. 
+  Our work provides a foundational framework and tools for achieving better alignment between human instructions and model outputs.
 
-Metric System:
-
-Open-Source Inference: 
-
-Closed-Source Model Evaluate: 
 
 ## 🖼️ Qualitative Results
 
@@ -26,7 +28,7 @@ Closed-Source Model Evaluate:
 ├── eval_closed_source/     # Part 3: API-based model testing
 │   ├── evaluate               # evaluation code
 │   └── generate               # image generation code by API
-├── benchmark/              # Part 4: Benchmark data
+├── benchmark/              # Part 4: Benchmark Data
 └── requirements       
 │   ├── requirement_closed_source.txt
 │   └── 
@@ -109,9 +111,9 @@ python eval_closed_source/evaluate/evaluate_geometric_task.py --model doubao
 The implementation of our open-source model evaluation suite is built upon the following repositories. We express our sincere gratitude to the authors and contributors for their pioneering work:
 
 *   **[FLUX.1](https://github.com/black-forest-labs/flux)**
-*   **[FLUX.2]()**
-*   **[Z-Image-Model]()**
-*   **[Qwen-Image]()**
+*   **[FLUX.2](https://github.com/black-forest-labs/flux2)**
+*   **[Z-Image-Model](https://github.com/Tongyi-MAI/Z-Image)**
+*   **[Qwen-Image](https://github.com/QwenLM/Qwen-Image)**
 
 
 These repositories have significantly facilitated our research on visual obedience.
