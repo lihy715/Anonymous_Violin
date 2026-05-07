@@ -21,15 +21,15 @@
 │   ├── mask_metric.py         # metric for image mask task
 │   └── shape_metric.py        # metric for geometric generation task
 ├── eval_open_source/       # Part 2: Inference scripts for open source models
-│   ├── 
-│   └── 
+│   ├── evaluate               # evaluation code
+│   └── generate               # image generation code
 ├── eval_closed_source/     # Part 3: API-based model testing
 │   ├── evaluate               # evaluation code
 │   └── generate               # image generation code by API
 ├── benchmark/              # Part 4: Benchmark Data
 └── requirements       
 │   ├── requirement_closed_source.txt
-│   └── 
+│   └── requirement_open_source.txt
 ```
 
 ## Anonymous Dataset Download
@@ -37,9 +37,66 @@
 We have provided a complete anonymous link for our data on ...  TODO
 
 ## 🚀 Generate and Evaluate with Open-Source Models
-1. Installation
+### Installation
+```bash
+conda create -n violin_opensource python=3.10
+conda activate violin_opensource
+pip install -r requirements/requirement_opensource.txt
+```
+### Running the Benchmark
+**Basic Usage:**
+```bash
+# Text-to-Image Generation
+python eval_open_source/generate/generate_opensource_models.py \
+    --model_name "Qwen/Qwen-Image" \
+    --prompt "a pure red image" \
+    --output_image "output.png"
 
-2. Running the Benchmark
+# Image Editing (for Qwen-Image-Edit models)
+python eval_open_source/generate/generate_opensource_models.py \
+    --model_name "Qwen/Qwen-Image-Edit-2511" \
+    --input_images "image1.png" "image2.png" \
+    --prompt "replace the object with a tree" \
+    --output_image "edited.png"
+```
+
+**Supported Models:**
+- FLUX.1 (`black-forest-labs/FLUX.1-schnell`, `black-forest-labs/FLUX.1-dev`)
+- FLUX.2 (`black-forest-labs/FLUX.2-klein-4B`, `black-forest-labs/FLUX.2-dev`)
+- Z-Image (`Tongyi-MAI/Z-Image`, `Tongyi-MAI/Z-Image-Turbo`)
+- Qwen-Image (`Qwen/Qwen-Image`, `Qwen/Qwen-Image-Edit-2511`)
+
+**Key Arguments:**
+- `--model_name`: Model path on HuggingFace (required)
+- `--input_images`: Input images for editing (optional, space-separated)
+- `--width`, `--height`: Image size (default: 1024×1024)
+- `--num_inference_steps`: Steps (default: 20)
+- `--seed`: Random seed (default: 655)
+
+### Running the Benchmark
+Once images are generated, evaluate them using our VIOLIN metrics:
+```bash
+# Evaluate Color Purity (Variation 1 - Single Block)
+python eval_open_source/evaluate/evaluate_open_source_models.py \
+    image1.png image2.png \
+    --type color
+
+# Evaluate Color Purity (Variation 2 - Dual Block)
+python eval_open_source/evaluate/evaluate_open_source_models.py \
+    gen_image.png gt_image.png \
+    --type color --multi
+
+# Evaluate Image Mask Task
+python eval_open_source/evaluate/evaluate_open_source_models.py \
+    generated_mask.png ground_truth_mask.png \
+    --type mask
+
+# Evaluate Geometric Shape Task
+python eval_open_source/evaluate/evaluate_open_source_models.py \
+    generated_shape.png ground_truth_shape.png \
+    --type shape
+```
+
 
 ## 📦Evaluate with Closed-Source Models
 
