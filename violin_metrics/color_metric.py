@@ -245,19 +245,14 @@ def Color_metrics_from_img_list(list_gen, list_gt, return_each_sample=False, **k
     return res_dict if return_each_sample else dict_mean(res_dict)
 
 
-import os
-from tqdm import tqdm
-
 def Color_metrics_from_img_list_no_equal(list_gen, list_gt, return_each_sample=False, **kwargs):
     """
-    计算颜色指标的列表处理函数。
-    支持 list_gen 长度短于 list_gt，通过文件名自动对齐匹配。
+    List processing function for calculating color metrics.
+    Supports cases where list_gen is shorter than list_gt by automatically aligning filenames.
     """
-    # 1. 构建 GT 的查找字典：{文件名: 完整路径}
-    # 使用 splitext 和 basename 忽略路径前缀和后缀名差异
+
     gt_dict = {os.path.splitext(os.path.basename(p))[0]: p for p in list_gt}
-    
-    # 2. 预匹配，确保进度条的总数(total)准确
+
     matched_pairs = []
     for p_gen in sorted(list_gen):
         file_name = os.path.splitext(os.path.basename(p_gen))[0]
@@ -265,16 +260,13 @@ def Color_metrics_from_img_list_no_equal(list_gen, list_gt, return_each_sample=F
             matched_pairs.append((p_gen, gt_dict[file_name]))
     
     if not matched_pairs:
-        # 如果没有任何匹配项，返回空字典或抛出异常
         return {} 
 
     results = []
-    # 3. 遍历匹配成功的对，并显示进度条
+
     for p_gen, p_gt in tqdm(matched_pairs, desc="Evaluating Color Metrics"):
-        # 调用路径处理函数，建议确保该函数内部有针对不同分辨率的 resize 逻辑
         res = Color_metrics_from_img_path(p_gen, p_gt, **kwargs)
         
-        # 增加防御：过滤掉因图片损坏加载失败产生的 None
         if res is not None:
             results.append(res)
     

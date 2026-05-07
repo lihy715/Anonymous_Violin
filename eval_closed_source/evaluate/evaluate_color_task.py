@@ -21,8 +21,6 @@ def get_evaluation_configs(
     current_script = os.path.abspath(__file__)
     
     # 2. Trace back to the project root directory
-    # If script is at: root/eval_closed_source/generate/generate/generate_mask_task.py
-    # We need to go up 4 levels to reach 'root'
     project_root = os.path.dirname(os.path.dirname((os.path.dirname(current_script))))
 
     # 3. Define paths relative to the project root
@@ -113,7 +111,7 @@ if __name__ == "__main__":
         '--model_type', 
         type=str, 
         required=True,
-        help="Model identifier (e.g., dall-e-3, midjourney)."
+        help="Model Type"
     )
     parser.add_argument(
         '--var_id',

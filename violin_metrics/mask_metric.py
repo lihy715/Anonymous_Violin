@@ -93,8 +93,7 @@ def Metric_Mask_Edge(img_gen_bgr, img_gt_bgr, bin_gt_filled):
 
     # If GT edge is very weak, we can't really evaluate edge quality, so we default to 0.
     if gt_grad < 1.0: return 0.0
-    
-    # 计算相对损失
+
     score = 1.0 - (gen_grad / gt_grad)
     
     return max(0.0, min(1.0, score))
@@ -172,33 +171,9 @@ def Mask_metrics_from_img_list(list_gen, list_gt, rescale_generated_image=False,
     return res if return_each_sample else dict_mean(res)
 
 
-# def Mask_metrics_from_img_list_non_equal(list_gen, list_gt, rescale_generated_image=False, return_each_sample=False, **kwargs):
-#     # 构建 GT 的查找字典：{文件名: 完整路径}
-#     # 使用 os.path.splitext(os.path.basename(p))[0] 确保只根据文件名匹配，忽略路径和后缀
-#     gt_dict = {os.path.splitext(os.path.basename(p))[0]: p for p in list_gt}
-    
-#     res = []
-#     # 按照 list_gen 的排序结果进行遍历
-#     for p_gen in sorted(list_gen):
-#         file_name = os.path.splitext(os.path.basename(p_gen))[0]
-        
-#         # 只有在 gt_dict 中找到对应键时才进行计算
-#         if file_name in gt_dict:
-#             p_gt = gt_dict[file_name]
-#             if rescale_generated_image:
-#                 res.append(Mask_metrics_from_img_path_scale(p_gen, p_gt, **kwargs))
-#             else:
-#                 res.append(Mask_metrics_from_img_path(p_gen, p_gt, **kwargs))
-    
-#     # 逻辑与原函数保持一致：转换格式并根据参数返回均值或原始列表
-#     res = change_list2dict(res)
-#     return res if return_each_sample else dict_mean(res)
-
 def Mask_metrics_from_img_list_non_equal(list_gen, list_gt, rescale_generated_image=False, return_each_sample=False, **kwargs):
-    # 1. 构建 GT 的查找字典
     gt_dict = {os.path.splitext(os.path.basename(p))[0]: p for p in list_gt}
     
-    # 2. 先进行预匹配，确定需要计算的任务对
     matched_pairs = []
     for p_gen in sorted(list_gen):
         file_name = os.path.splitext(os.path.basename(p_gen))[0]
@@ -206,17 +181,17 @@ def Mask_metrics_from_img_list_non_equal(list_gen, list_gt, rescale_generated_im
             matched_pairs.append((p_gen, gt_dict[file_name]))
     
     if not matched_pairs:
-        return {} # 或者根据你的需求 raise ValueError("No matches found")
+        return {} 
 
     res = []
-    # 3. 使用 tqdm 包装匹配后的列表，进度条将准确显示匹配成功的样本数
+
     for p_gen, p_gt in tqdm(matched_pairs, desc="Calculating Mask Metrics"):
         if rescale_generated_image:
             res.append(Mask_metrics_from_img_path_scale(p_gen, p_gt, **kwargs))
         else:
             res.append(Mask_metrics_from_img_path(p_gen, p_gt, **kwargs))
     
-    # 4. 逻辑与原函数保持一致
+
     res = change_list2dict(res)
     return res if return_each_sample else dict_mean(res)
 
@@ -236,16 +211,3 @@ def Mask_metrics_from_tensor(tensor1, tensor2, return_tensor=True, return_each_s
     else:
         return dict2tensor(dict_mean(res)) if return_tensor else dict_mean(res)
     
-
-if __name__ == '__main__':
-
-    gt = 'metrics_v2/mask_test_cases/gt.png'
-    cases = ['case_dist.png', 'case_biou.png', 'case_leak.png', 'case_edge.png','gt.png']
-
-    for c in cases:
-        path = f'metrics_v2/mask_test_cases/{c}'
-        res = Mask_metrics_from_img_path(path, gt)
-        print(f"Results for {c}:")
-        for k, v in res.items():
-            print(f"  {k}: {v:.4f}")
-        print("-" * 20)

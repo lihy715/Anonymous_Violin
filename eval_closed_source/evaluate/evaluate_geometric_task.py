@@ -69,7 +69,7 @@ def run_shape_evaluation(
     Executes the shape geometry evaluation pipeline and logs the results.
 
     Args:
-        model_type (str): The specific model architecture or version.
+        model_type (str): The specific model.
         square (bool): Whether the input/output images are expected to be square.
         return_each_sample (bool): If True, provides per-sample metric granularity.
     """
@@ -109,7 +109,7 @@ if __name__ == "__main__":
         '--model_type', 
         type=str, 
         required=True,
-        help="Identifier for the model (e.g., gpt-4o, sd-xl)."
+        help="Model Type"
     )
     parser.add_argument(
         '--square', 
