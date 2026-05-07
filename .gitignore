@@ -1,4 +1,5 @@
 benchmark/data
 benchmark/metadata
-benchmark/raw_config
-benchmark/scripts
+benchmark/templates
+closed_source_results/*
+__pycache__

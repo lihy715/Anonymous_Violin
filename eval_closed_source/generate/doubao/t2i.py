@@ -69,14 +69,3 @@ def call_image_generation_api(prompt, save_path, api_key=None):
         
     except requests.exceptions.RequestException as e:
         print(f"API Request failed: {e}")
-
-if __name__ == '__main__':
-    test_prompt = "a pure color red"
-    output_directory = "./closed_source_results"
-    
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
-        
-    target_file = os.path.join(output_directory, "test_output.png")
-    
-    call_image_generation_api(test_prompt, target_file)

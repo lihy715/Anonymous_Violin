@@ -8,7 +8,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 if current_dir not in sys.path:
     sys.path.append(current_dir)
-from shape_metric import load_image, tensor2npBGR, change_list2dict, dict_mean, dict2tensor, Metric_IoU, Metric_Dist
+from shape_metric import load_image, change_list2dict, dict_mean, dict2tensor, Metric_IoU, Metric_Dist_Normalized
 
 
 

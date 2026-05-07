@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import torch
 from tqdm import tqdm
+import os
 
 # --- 核心辅助函数保持不变 ---
 def load_image(img_path):
@@ -144,13 +145,42 @@ def dict2tensor(dicts):
         new_dict[key] = torch.tensor(dicts[key])
     return new_dict
 
+# def Shape_metrics_from_img_list(list_gen, list_gt, return_each_sample=False, **kwargs):
+#     if len(list_gen) != len(list_gt): raise ValueError("List length mismatch")
+#     res = []
+#     for p_gen, p_gt in tqdm(zip(sorted(list_gen), sorted(list_gt)), total=len(list_gen)):
+#         res.append(Shape_metrics_from_img_path(p_gen, p_gt, **kwargs))
+#     res = change_list2dict(res)
+#     return res if return_each_sample else dict_mean(res)
+
+
 def Shape_metrics_from_img_list(list_gen, list_gt, return_each_sample=False, **kwargs):
-    if len(list_gen) != len(list_gt): raise ValueError("List length mismatch")
+    # 1. 构建 GT 的查找字典
+    gt_dict = {os.path.splitext(os.path.basename(p))[0]: p for p in list_gt}
+    
+    # 2. 先进行预匹配，确定需要计算的任务对
+    matched_pairs = []
+    for p_gen in sorted(list_gen):
+        file_name = os.path.splitext(os.path.basename(p_gen))[0]
+        if file_name in gt_dict:
+            matched_pairs.append((p_gen, gt_dict[file_name]))
+    
+    if not matched_pairs:
+        return {} 
+
     res = []
-    for p_gen, p_gt in tqdm(zip(sorted(list_gen), sorted(list_gt)), total=len(list_gen)):
-        res.append(Shape_metrics_from_img_path(p_gen, p_gt, **kwargs))
+
+    for p_gen, p_gt in tqdm(matched_pairs, desc="Calculating Mask Metrics"):
+        if rescale_generated_image:
+            res.append(Mask_metrics_from_img_path_scale(p_gen, p_gt, **kwargs))
+        else:
+            res.append(Mask_metrics_from_img_path(p_gen, p_gt, **kwargs))
+    
+    # 4. 逻辑与原函数保持一致
     res = change_list2dict(res)
     return res if return_each_sample else dict_mean(res)
+
+
 
 def Shape_metrics_from_tensor(tensor1, tensor2, return_tensor=True, return_each_sample=False, **kwargs):
     if tensor1.shape != tensor2.shape: raise ValueError("Shape mismatch")

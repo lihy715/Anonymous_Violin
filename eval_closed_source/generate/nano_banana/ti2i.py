@@ -39,18 +39,20 @@ def call_image_edit_api(prompt, base_img_path, mask_img_path, save_path, api_key
     url = "https://api.bltcy.ai/v1/images/edits"
     
     # Standardize data paths to be relative to the project root
-    data_root = os.getenv("VIOLIN_DATA_ROOT", "./benchmark/data")
+    current_script_path = os.path.abspath(__file__) 
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+
+    default_data_root = os.path.join(root_dir, "benchmark", "data")
+    data_root = os.getenv("VIOLIN_DATA_ROOT", default_data_root)
+
     full_img_path = os.path.join(data_root, base_img_path)
     full_mask_path = os.path.join(data_root, mask_img_path)
 
     payload = {
-        "model": "doubao-seedream-5-0-260128",
         "prompt": prompt,
-        "n": 1,
-        "response_format": "url",
-        "size": "2K",
-        "aspect_ratio": "1:1",
-        "watermark": False
+        "model": "nano-banana-2",
+        "aspect_ratio":"1:1",
+        "image_size":"1K",
     }
     
     headers = {'Authorization': f'Bearer {api_key}'}
@@ -73,21 +75,3 @@ def call_image_edit_api(prompt, base_img_path, mask_img_path, save_path, api_key
         print(f"Error: Resource not found at {data_root}. Please check your data paths.")
     except requests.exceptions.RequestException as e:
         print(f"API call failed: {e}")
-
-if __name__ == '__main__':
-    # Define a deterministic task for VIOLIN benchmark
-    benchmark_prompt = (
-        "Apply the binary mask to the original image. "
-        "Pixels corresponding to the white regions (255) of the mask must retain their original color, "
-        "while black regions (0) must be filled with pure black."
-    )
-    
-    # Generic relative paths for the repository
-    src_img = "Variation_4_raw_image/images/000000000.jpg"
-    mask_img = "Variation_4_raw_image/inpainting_mask/000000000.png"
-    out_img = "./closed_source_results/test_edit_result.png"
-
-    # Ensure output directory exists
-    os.makedirs(os.path.dirname(out_img), exist_ok=True)
-
-    call_image_edit_api(benchmark_prompt, src_img, mask_img, out_img)

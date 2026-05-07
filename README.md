@@ -47,10 +47,13 @@ We have provided a complete anonymous link for our data on ...  TODO
 Please make sure your dataset is in ./benchmark. Run following command to prepare for evaluate. (You can freely choose your pytorch version).
 
 ```python
-pip install -r requirement_closed_source.txt
+conda create -n violin python=3.10
+
+pip install -r requirements/requirement_closed_source.txt
 ```
 
 ### API Key Setup
+We utilized [website](https://api.bltcy.ai/) for API calls, which is an integrated platform for different models.
 ```
 # For Linux/macOS
 export GENERATIVE_API_KEY="your_api_key_here"
@@ -59,9 +62,6 @@ export GENERATIVE_API_KEY="your_api_key_here"
 set GENERATIVE_API_KEY=your_api_key_here
 
 ```
-
-
-
 
 ### Generate Images
 
@@ -90,16 +90,16 @@ Run the following command to evaluate models on three tasks, results will be dis
 # Available models: gpt, nano_banana, doubao
 
 # For Color Purity Task variation-1, single block color
-python eval_closed_source/generate/generate_color_var1_task.py --model gpt
+python eval_closed_source/evaluate/evaluate_color_task.py --model gpt --var_id 1
 
 # For Color Purity Task variation-2, double block color
-python eval_closed_source/generate/generate_color_var2_task.py --model gpt
+python eval_closed_source/evaluate/evaluate_color_task.py --model gpt --var_id 2
 
 # For Image Mask Task
-python eval_closed_source/generate/generate_mask_task.py --model nano_banana
+python eval_closed_source/evaluate/evaluate_mask_task.py --model nano_banana
 
 # For Geometric Generation Task
-python eval_closed_source/generate/generate_geometric_task.py --model doubao
+python eval_closed_source/evaluate/evaluate_geometric_task.py --model doubao
 ```
 
 
