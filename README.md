@@ -55,19 +55,19 @@ mv Violin benchmark
 ```bash
 conda create -n violin_opensource python=3.10
 conda activate violin_opensource
-pip install -r requirements/requirement_opensource.txt
+pip install -r requirements/requirement_open_source.txt
 ```
 ### Running the Benchmark
 **Basic Usage:**
 ```bash
 # Text-to-Image Generation
-python eval_open_source/generate/generate_opensource_models.py \
+python eval_open_source/generate/generate_open_source_models.py \
     --model_name "Qwen/Qwen-Image" \
     --prompt "a pure red image" \
     --output_image "output.png"
 
 # Image Editing (for Qwen-Image-Edit models)
-python eval_open_source/generate/generate_opensource_models.py \
+python eval_open_source/generate/generate_open_source_models.py \
     --model_name "Qwen/Qwen-Image-Edit-2511" \
     --input_images "image1.png" "image2.png" \
     --prompt "replace the object with a tree" \

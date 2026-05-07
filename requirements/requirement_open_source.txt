@@ -19,3 +19,4 @@ tqdm>=4.67.0
 requests>=2.32.0
 PyYAML>=6.0.0
 qwen-vl-utils>=0.0.11
+accelerate
