@@ -6,15 +6,13 @@
 
   Recent advances in generative AI have shown human-level performance in complex content creation. 
   However, we identify a "Paradox of Simplicity": models that can render complex scenes often fail at trivial, low-entropy tasks, such as generating a uniform pure color image. 
-  We argue this is a systemic failure linked to uncontrollable emergent abilities. 
+  We argue this is a systemic failure related to uncontrollable emergent abilities. 
   As models scale, strong priors for aesthetics and complexity override deterministic simplicity, creating an "aesthetic bias" that hinders the model's transition from data simulation to true intellectual abstraction.
   To better investigate this problem, we formalize the concept of AI Obedience, a hierarchical framework that grades a model's ability to transition from probabilistic approximation to pixel-level determinism (Levels 1 to 5).
   We introduce Violin, the first systematic benchmark designed to evaluate Level 4 Obedience through three deterministic tasks: color purity, image masking, and geometric shape generation. 
   Using Violin, we evaluate several state-of-the-art models and reveal that closed-source models generally outperform open-source ones in deterministic precision. Interestingly, performance on our benchmark correlates with the benchmark in natural image generation. 
   Our work provides a foundational framework and tools for achieving better alignment between human instructions and model outputs.
 
-
-## 🖼️ Qualitative Results
 
 ## 📂 Repository Structure
 ```
